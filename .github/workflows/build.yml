@@ -16,7 +16,7 @@ jobs:
       - run: |
           npm install
           npm run electron:build
-          ls dist-electron/
+          ls -la dist-electron/ || echo 'not found'
       - uses: actions/upload-artifact@v4
         with:
           name: mac-app
