@@ -9,24 +9,16 @@ jobs:
   build-mac:
     runs-on: macos-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build macOS
-        run: npm run electron:build
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload macOS app
-        uses: actions/upload-artifact@v4
+      - run: |
+          npm install
+          npm run electron:build
+          mkdir -p dist-electron/mac
+          cp -r dist-electron/win-unpacked dist-electron/mac/MacOS
+      - uses: actions/upload-artifact@v4
         with:
           name: mac-app
           path: dist-electron/mac/
@@ -35,48 +27,15 @@ jobs:
   build-win:
     runs-on: windows-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build Windows
-        run: npm run electron:build
-
-      - name: Upload Windows exe
-        uses: actions/upload-artifact@v4
+      - run: |
+          npm install
+          npm run electron:build
+      - uses: actions/upload-artifact@v4
         with:
           name: win-exe
           path: dist-electron/*.exe
           retention-days: 7
-
-  release:
-    needs: [build-mac, build-win]
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - name: Download macOS
-        uses: actions/download-artifact@v4
-        with:
-          name: mac-app
-          path: artifacts/mac
-
-      - name: Download Windows
-        uses: actions/download-artifact@v4
-        with:
-          name: win-exe
-          path: artifacts/win
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: artifacts/**/*
-          draft: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
