@@ -15,8 +15,8 @@ jobs:
           node-version: '20'
       - run: |
           npm install
-          npm run electron:build
-          ls -la dist-electron/ || echo 'not found'
+          npx electron-builder --mac
+          ls dist-electron/
       - uses: actions/upload-artifact@v4
         with:
           name: mac-app
@@ -32,7 +32,7 @@ jobs:
           node-version: '20'
       - run: |
           npm install
-          npm run electron:build
+          npx electron-builder --win
       - uses: actions/upload-artifact@v4
         with:
           name: win-exe
