@@ -16,11 +16,11 @@ jobs:
       - run: |
           npm install
           npx electron-builder --mac
-          ls dist-electron/
+          find dist-electron -type f | head -20
       - uses: actions/upload-artifact@v4
         with:
           name: mac-app
-          path: dist-electron/mac/
+          path: dist-electron/
           retention-days: 7
 
   build-win:
