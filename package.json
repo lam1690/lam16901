@@ -1,0 +1,41 @@
+{
+  "name": "primary-chinese-reading",
+  "version": "1.0.0",
+  "productName": "小学语文阅读",
+  "main": "electron-main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "electron:dev": "concurrently \"vite\" \"electron .\"",
+    "electron:build": "vite build && electron-builder",
+    "electron:preview": "vite build && electron ."
+  },
+  "dependencies": {
+    "vue": "^3.4.0",
+    "vue-router": "^4.3.0",
+    "pinia": "^2.1.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "vite": "^5.0.0",
+    "electron": "^28.0.0",
+    "electron-builder": "^24.0.0",
+    "concurrently": "^8.0.0",
+    "vite-plugin-electron": "^0.28.0"
+  },
+  "build": {
+    "appId": "com.primary.reading",
+    "productName": "小学语文阅读",
+    "win": {
+      "target": "portable",
+      "icon": "build/icon.ico"
+    },
+    "mac": {
+      "target": "dir",
+      "icon": "build/icon.icns"
+    },
+    "directories": {
+      "output": "dist-electron"
+    }
+  }
+}
